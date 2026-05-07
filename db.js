@@ -1,9 +1,12 @@
 import express from 'express';
-const router = express.Router();
+import { Client } from 'pg';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { Client } from 'pg';
+
+// A router is like a mini-application that can handle HTTP requests (like GET, POST) for specific paths. 
+// It allows you to organize your routes into modular groups, which you can then "mount" onto your main Express app. 
+const router = express.Router();
 
 const client = new Client({
     user:process.env.DB_username,
