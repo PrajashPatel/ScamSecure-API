@@ -36,9 +36,11 @@ router.get('/trending/:type', async(req, res) => {
 })
 
 router.post('/trending', async(req,res) => {
+    const {count,type} = req.body;
+    console.log(count,type);
     
 })
-
+ 
 client.connect()
 .then(() => console.log('Connected to PostgreSQL database'))
 .catch(err => console.error('Connection error', err));

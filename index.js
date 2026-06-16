@@ -1,12 +1,14 @@
 import express from 'express'
 import bodyParser from "body-parser"
 import levenshtein from "fast-levenshtein";
+import cors from 'cors'
 
 import router from './db.js';
 
 const app = express()
 const Port = 4000;
 
+app.use(cors())
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
