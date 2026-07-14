@@ -1,0 +1,113 @@
+.card{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:50px;
+
+    margin-top:40px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.06);
+
+    border:1px solid #E2E8F0;
+
+    text-align:center;
+
+}
+
+.card h1{
+
+    font-size:2rem;
+
+    color:#0F172A;
+
+    margin-bottom:15px;
+
+}
+
+.card p{
+
+    color:#64748B;
+
+    max-width:650px;
+
+    margin:auto;
+
+    line-height:1.7;
+
+}
+
+.searchBox{
+
+    margin-top:35px;
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+.searchBox input{
+
+    flex:1;
+
+    padding:18px 20px;
+
+    border:1px solid #CBD5E1;
+
+    border-radius:12px;
+
+    font-size:1rem;
+
+    outline:none;
+
+    transition:.25s;
+
+}
+
+.searchBox input:focus{
+
+    border-color:#2563EB;
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+
+}
+
+.searchBox button{
+
+    background:#2563EB;
+
+    color:white;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:0 26px;
+
+    font-size:1rem;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    transition:.25s;
+
+}
+
+.searchBox button:hover{
+
+    background:#1D4ED8;
+
+}
+
+.searchBox button:disabled{
+
+    background:#94A3B8;
+
+    cursor:not-allowed;
+
+}

@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from "body-parser"
 import levenshtein from "fast-levenshtein";
 import cors from 'cors'
+import axios from "axios";
 
 import router from './db.js';
 
@@ -13,7 +14,7 @@ app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
 
-app.post('/check/url', (req, res) => {
+app.post('/check/url', async (req, res) => {
     const url = req.body?.url.trim();
     if (!url){
         return res.status(400).json({error: 'URL is required'});
@@ -36,6 +37,21 @@ app.post('/check/url', (req, res) => {
       if (badTlds.some(tld => url.toLowerCase().endsWith(tld))) {reasons.push('URL contains suspicious domain extension');
         score += 20;
       }
+
+
+      const mlResponse =  await axios.post(
+        "http://127.0.0.1:5000/predict",
+        {
+          url
+        }
+      );
+
+      const mlPrediction = mlResponse.data.prediction;
+      const mlProbability = mlResponse.data.probability;
+      if (mlPrediction === 1) {
+    score += 65;
+    reasons.push("Machine Learning model detected phishing patterns.");
+}
 
       const brands = [
         "amazon",
@@ -91,6 +107,8 @@ app.post('/check/url', (req, res) => {
             normalized_url: parsed.href,
             risk_score: score,
             risk_level,
+            mlPrediction,
+            mlProbability,
             verdict,
             safe_to_open: score < 50,
             reasons,
@@ -108,6 +126,10 @@ app.post('/check/url', (req, res) => {
       }
     }
 )
+
+// app.post('/predict/url', (req,res) =>{
+
+// })
 
 app.use('/scam', router);
 

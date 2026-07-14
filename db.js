@@ -36,10 +36,60 @@ router.get('/trending/:type', async(req, res) => {
 })
 
 router.post('/trending', async(req,res) => {
-    const {count,type} = req.body;
-    console.log(count,type);
+    try{
+
+        const { type, count } = req.body;
+        const result = await client.query(
+            "INSERT INTO scam_trends(type,count) VALUES($1,$2) RETURNING *",   [type,count]
+        );
+
+        res.status(201).json(result.rows[0]);
+    }
+
+    catch(err){
+        console.error(err);
+        res.status(500).json({
+            error:"Unable to insert data."
+        });
+
+    }
+
+});
+
+router.delete("/trending/:type", async (req, res) => {
+
+    try {
+        const { type } = req.params;
+        const result = await client.query(
+            "DELETE FROM scam_trends WHERE type = $1 RETURNING *",
+            [type]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({
+                message: "Scam type not found."
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Scam trend deleted successfully.",
+            deleted: result.rows[0]
+        });
+
+    } catch (err) {
+
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: "Unable to delete scam trend."
+        });
+
+    }
+
+});
     
-})
+
  
 client.connect()
 .then(() => console.log('Connected to PostgreSQL database'))
