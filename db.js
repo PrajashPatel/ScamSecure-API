@@ -8,17 +8,23 @@ dotenv.config();
 // It allows you to organize your routes into modular groups, which you can then "mount" onto your main Express app. 
 const router = express.Router();
 
+// const client = new Client({
+//     user:process.env.DB_username,
+//     server:'localhost',
+//     port:5432,
+//     password:process.env.DB_password,
+//     database:process.env.DB_database
+// })
 const client = new Client({
-    user:process.env.DB_username,
-    server:'localhost',
-    port:5432,
-    password:process.env.DB_password,
-    database:process.env.DB_database
-})
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
 
 router.get('/trending', async(req, res) => {
     try{
-        const result = await client.query('SELECT * FROM scam_trends ORDER BY count DESC LIMIT 10');
+        const result = await client.query('SELECT * FROM scam_trend ORDER BY count DESC LIMIT 10');
         res.json(result.rows);
     } catch(err){
         res.send(err);
@@ -28,7 +34,7 @@ router.get('/trending', async(req, res) => {
 router.get('/trending/:type', async(req, res) => {
     try{
         const type = req.params.type;
-        const result = await client.query('SELECT * FROM scam_trends WHERE type = $1',[type]);
+        const result = await client.query('SELECT * FROM scam_trend WHERE type = $1',[type]);
         res.json(result.rows);
     } catch(err){
         res.send(err);
@@ -40,7 +46,7 @@ router.post('/trending', async(req,res) => {
 
         const { type, count } = req.body;
         const result = await client.query(
-            "INSERT INTO scam_trends(type,count) VALUES($1,$2) RETURNING *",   [type,count]
+            "INSERT INTO scam_trend(type,count) VALUES($1,$2) RETURNING *",   [type,count]
         );
 
         res.status(201).json(result.rows[0]);
@@ -61,7 +67,7 @@ router.delete("/trending/:type", async (req, res) => {
     try {
         const { type } = req.params;
         const result = await client.query(
-            "DELETE FROM scam_trends WHERE type = $1 RETURNING *",
+            "DELETE FROM scam_trend WHERE type = $1 RETURNING *",
             [type]
         );
 

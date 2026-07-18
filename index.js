@@ -40,7 +40,7 @@ app.post('/check/url', async (req, res) => {
 
 
       const mlResponse =  await axios.post(
-        "http://127.0.0.1:5000/predict",
+        "https://scamsecure-api.onrender.com/predict",
         {
           url
         }
@@ -107,7 +107,7 @@ app.post('/check/url', async (req, res) => {
             normalized_url: parsed.href,
             risk_score: score,
             risk_level,
-            mlPrediction,
+            mlPrediction : mlPrediction ,
             mlProbability,
             verdict,
             safe_to_open: score < 50,
