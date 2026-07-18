@@ -31,6 +31,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 # TF-IDF Vectorizer
 vectorizer = TfidfVectorizer(
+    max_features=30000,
     analyzer="char",
     ngram_range=(3, 5)
 )
@@ -69,17 +70,17 @@ joblib.dump(vectorizer, "vectorizer.pkl")
 print("\nModel Saved Successfully!")
 
 
-# Accuracy : 0.9697577886238198
-# Precision: 0.9855714824594493
-# Recall   : 0.9534713985950187
-# F1 Score : 0.9692557384651055
+# Accuracy : 0.9701683163800575
+# Precision: 0.984488107549121
+# Recall   : 0.9553872821822826
+# F1 Score : 0.9697194184646727
 
 # Classification Report
 
 #               precision    recall  f1-score   support
 
-#            0       0.95      0.99      0.97     10962
-#            1       0.99      0.95      0.97     10961
+#            0       0.96      0.98      0.97     10962
+#            1       0.98      0.96      0.97     10961
 
 #     accuracy                           0.97     21923
 #    macro avg       0.97      0.97      0.97     21923
@@ -88,5 +89,5 @@ print("\nModel Saved Successfully!")
 
 # Confusion Matrix
 
-# [[10809   153]
-#  [  510 10451]]
+# [[10797   165]
+#  [  489 10472]]
